@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- July 17, 2012 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://api.bluevia.com/schemas/context/v2" 
+			xmlns:com="http://api.bluevia.com/schemas/common/v2"
+			targetNamespace="http://api.bluevia.com/schemas/context/v2" 
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xsd:import namespace="http://api.bluevia.com/schemas/common/v2" schemaLocation="api.bluevia.com_common_v2_0.xsd"/>
+
+
+
+<xsd:annotation>
+	<xsd:documentation>The following are the resources to be included in HTTP requests or responses</xsd:documentation>
+</xsd:annotation>		
+
+<!-- User -->
+	<!-- GET /users/me.xml -->
+	<!-- GET /users/{accountId} -->
+	<xsd:element name="user" type="tns:UserType"/>
+
+
+<xsd:annotation>
+	<xsd:documentation>The following are the types defined for each used resource</xsd:documentation>
+</xsd:annotation>	
+
+
+	<xsd:complexType name="UserType">
+			<xsd:sequence>				
+				<xsd:element name="name" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="language" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="gender" type="tns:GenderType" minOccurs="0" />				
+				<!-- Placeholder for extra information that may be included in the future -->
+				<xsd:element name="param" type="com:NameValuePairType" minOccurs="0" maxOccurs="unbounded"/>
+				<!-- Account details of the user -->
+				<xsd:element name="account" type="tns:AccountType" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>    
+
+    <xsd:annotation>
+		<xsd:documentation>The following are the rest of types used in the API</xsd:documentation>
+	</xsd:annotation>
+    
+  <xsd:complexType name="AccountType">
+			<xsd:sequence>
+				<!-- Account Id is the telephone number of the end-user/consumer -->
+				<xsd:element name="accountId" type="xsd:anyURI" minOccurs="0" />
+				<xsd:element name="providerName" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="providerId" type="xsd:string" minOccurs="0" />
+				<xsd:element name="type" type="xsd:string" minOccurs="0" />				
+				<xsd:element name="incomingCallBlocking" type="xsd:boolean" minOccurs="0"/>
+				<xsd:element name="outgoingCallBlocking" type="xsd:boolean" minOccurs="0"/>
+				<xsd:element name="parentalControl" type="xsd:string" minOccurs="0" />
+				<xsd:element name="mmsStatus" type="xsd:string" minOccurs="0" />
+				<xsd:element name="segment" type="xsd:string" minOccurs="0" />
+				<xsd:element name="usageProfile" type="xsd:string" minOccurs="0" />
+				<xsd:element name="databundle" type="xsd:boolean" minOccurs="0" />
+				<xsd:element name="roamingDisabled" type="xsd:boolean" minOccurs="0" />
+				<!-- Placeholder for extra information that may be included in the future -->
+				<xsd:element name="param" type="com:NameValuePairType" minOccurs="0" maxOccurs="unbounded"/>
+				<!-- Device/User-Agent details of the end-user/consumer -->
+				<xsd:element name="device" type="tns:DeviceType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DeviceType">
+		<xsd:sequence>
+			<xsd:element name="brand" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="os" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="osVersion" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="model" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:string" minOccurs="0" />
+			<xsd:element name="screenHeight" type="xsd:integer" minOccurs="0" />
+			<xsd:element name="screenWidth" type="xsd:integer" minOccurs="0" />
+			<xsd:element name="mms" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="ems" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="emsMaxNumber" type="xsd:int" minOccurs="0" />
+			<xsd:element name="smartMessaging" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="wap" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="wapPush" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="mmsVideo" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="videoStreaming" type="xsd:boolean" minOccurs="0" />
+			<!-- Placeholder for extra information that may be included in the future -->
+			<xsd:element name="param" type="com:NameValuePairType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Details of the network where the device is connected -->
+			<xsd:element name="network" type="tns:NetworkType" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NetworkType">
+		<xsd:sequence>
+			<xsd:element name="accessType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="apn" type="xsd:anyURI" minOccurs="0"/>
+			<xsd:element name="roamingNow" type="xsd:boolean" minOccurs="0"/>
+			<!-- Placeholder for extra information that may be included in the future -->
+			<xsd:element name="param" type="com:NameValuePairType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>  
+	
+	
+	<!-- This enumeration used to represent the Gender of the end-user -->
+	<xsd:simpleType name="GenderType" >
+		<xsd:restriction base="xsd:string">
+			<!-- Gender is MALE -->
+			<xsd:enumeration value="male" /> 
+			<!-- Gender is FEMALE -->
+			<xsd:enumeration value="female" /> 
+		</xsd:restriction>                          
+	</xsd:simpleType>
+    
+</xsd:schema>

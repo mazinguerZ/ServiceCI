@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:oct="http://www.telefonica.com/schemas/UNICA/SOAP/charging/v1" 
+			xmlns:uct="http://www.telefonica.com/schemas/UNICA/SOAP/common/v1"
+			targetNamespace="http://www.telefonica.com/schemas/UNICA/SOAP/charging/v1" 
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xsd:include schemaLocation="UNICA_API_SOAP_charging_types_extension_v1.xsd"/>
+	
+	<xsd:import namespace="http://www.telefonica.com/schemas/UNICA/SOAP/common/v1"
+        schemaLocation="UNICA_API_SOAP_common_types_v1_0.xsd" />
+	
+	
+	<xsd:simpleType name="RequestIdType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="RequestNumberType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="SenderIdentityType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ServiceContextIdType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="OperatorIdType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="TimeZoneType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[+-][01][0-9][0134][05]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CodeType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="PurchaseCodeType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="SubPurchaseCodeType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="DescriptionType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="PromotionalCodeType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ApplicationReferenceType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+   <xsd:simpleType name="AppProviderIdType">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+	<xsd:simpleType name="AdditionalInfoType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ResultCodeType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="CorrelationIdType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ExternalTransactionIdType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="SecondClientOperationType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:complexType name="ExtensionType">
+		<xsd:sequence>
+			<xsd:any namespace="http://www.telefonica.com/schemas/UNICA/SOAP/charging/v1 http://www.telefonica.com/schemas/UNICA/SOAP/common/v1" processContents="strict" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="ValueDigitsType">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ExponentType">
+		<xsd:restriction base="xsd:unsignedInt"/>
+	</xsd:simpleType>
+   <xsd:simpleType name="RollbackType">
+      <xsd:restriction base="xsd:boolean"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="ExpandedResponseType">
+      <xsd:restriction base="xsd:boolean"/>
+   </xsd:simpleType>
+
+	<xsd:complexType name="UnitValueType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					  This complextype uses base 10, numbers are constructed like [valueDigits]*10exp-[exponent]. The exponent is used to fix the decimal point of the number expressed by the valueDigits parameter.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="valueDigits" type="oct:ValueDigitsType"/>
+			<xsd:element name="exponent" type="oct:ExponentType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestedServiceUnitsType">
+		<xsd:sequence>
+			<xsd:element name="units" type="oct:UnitsType" minOccurs="0"/>
+			<xsd:element name="money" type="oct:MoneyType" minOccurs="0"/>
+			<xsd:element name="taxes" type="oct:UnitValueType" minOccurs="0"/>
+			<xsd:element name="partialCharge" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="newPurchase" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnitsType">
+		<xsd:sequence>
+			<xsd:element name="genericUnits" type="xsd:unsignedInt"/>
+			<xsd:element name="purchaseModelUnitAndAction" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="renewalAction" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="usageType" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MoneyType">
+		<xsd:sequence>
+			<xsd:element name="monetaryUnits" type="oct:UnitValueType"/>
+			<xsd:element name="valueBeforeTaxes" type="xsd:unsignedInt"/>
+			<xsd:element name="unitsCurrencyCode" type="xsd:unsignedInt"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriceType">
+		<xsd:sequence>
+			<xsd:element name="priceUnits" type="oct:UnitValueType"/>
+			<xsd:element name="priceCurrencyCode" type="xsd:unsignedInt"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MMSInformationType">
+		<xsd:sequence>
+			<xsd:element name="originatorAddress" type="uct:UserIdType" minOccurs="0"/>			
+			<xsd:element name="recipientAddress" type="uct:UserIdType" minOccurs="0"/>			
+			<xsd:element name="messageSize" type="xsd:unsignedLong" minOccurs="0"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SMSInformationType">
+		<xsd:sequence>
+			<xsd:element name="originatorAddress" type="uct:UserIdType" minOccurs="0"/>			
+			<xsd:element name="recipientAddress" type="uct:UserIdType" minOccurs="0"/>			
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceInformationType">
+		<xsd:choice>
+			<xsd:element name="MMSInformation" type="oct:MMSInformationType"/>
+			<xsd:element name="SMSInformation" type="oct:SMSInformationType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<!-- Types for the Purchase Model Of Event Query -->
+	<xsd:simpleType name="ShowOtherEventsType">
+		<xsd:restriction base="xsd:boolean"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="LanguageType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="TypeOfQueryType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Specifies the type of purchase models requested. The possible values are:
+				(0)ALL---> Purchased and purchasable (default)
+				(1)PURCHASABLE ----> Available for purchase
+				(2)PURCHASED ---> Already purchased
+				(3)PURCHASED_PLUS ---> Already purchased; if there are not any purchased, purchasable
+				(4)ACQUIRED_FOR_SERVICE ---> Purchased for a particular Purchase Code
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:int">
+			<xsd:enumeration value="0" />
+			<xsd:enumeration value="1" />
+			<xsd:enumeration value="2" />
+			<xsd:enumeration value="3" />
+			<xsd:enumeration value="4" />
+		</xsd:restriction>
+	</xsd:simpleType>	
+   <xsd:simpleType name="AggregateVouchersType">
+      <xsd:restriction base="xsd:boolean"/>
+   </xsd:simpleType>
+	<xsd:complexType name="EventsListType">
+		<xsd:sequence>
+			<xsd:element name="event" type="oct:EventType" maxOccurs="unbounded"/>			
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EventType">
+		<xsd:sequence>
+			<xsd:element name="code1" type="oct:CodeType"/>
+			<xsd:element name="code2" type="oct:CodeType"/>
+			<xsd:element name="code3" type="oct:CodeType"/>
+			<xsd:element name="promotionalCode" type="oct:PromotionalCodeType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ThresholdInformationType">
+		<xsd:sequence>
+			<xsd:element name="unitsThreshold" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="expiryDaysThreshold" type="xsd:unsignedInt" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RenewalInformationType">
+		<xsd:sequence>
+			<xsd:element name="renewalByUnits" type="xsd:unsignedInt"/>
+			<xsd:element name="renewalByExpiry" type="xsd:unsignedInt"/>
+			<xsd:element name="renewalCost" type="oct:PriceType"/>
+			<xsd:element name="renewalUnits" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="renewalPeriodType" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="renewalPeriodUnits" type="xsd:unsignedInt" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RenewalInformationAcquiredType">
+		<xsd:complexContent>
+			<xsd:extension base="oct:RenewalInformationType">
+				<xsd:sequence>
+					<xsd:element name="firstRenewalDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="renewalStatus" type="xsd:unsignedInt"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelsOfEventsListType">
+		<xsd:sequence>
+			<xsd:element name="purchaseModelsOfEvent" type="oct:PurchaseModelsOfEventType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelsOfEventType">
+		<xsd:sequence>
+			<xsd:element name="resultCode" type="oct:ResultCodeType"/>
+			<xsd:element name="eventId" type="oct:EventType"/>
+			<xsd:element name="availablePurchaseModelsList" type="oct:AvailablePurchaseModelsListType" minOccurs="0"/>
+			<xsd:element name="acquiredPurchaseModelsList" type="oct:AcquiredPurchaseModelsListType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AvailablePurchaseModelsListType">
+		<xsd:sequence>
+			<xsd:element name="availablePurchaseModel" type="oct:AvailablePurchaseModelType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AvailablePurchaseModelType">
+		<xsd:sequence>
+			<xsd:element name="purchaseCode" type="oct:PurchaseCodeType"/>
+			<xsd:element name="description" type="oct:DescriptionType"/>
+			<xsd:element name="promotional" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="validityStartType" type="xsd:int"/>
+			<xsd:element name="validityStartDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="validityEndType" type="xsd:int"/>
+			<xsd:element name="validityUnits" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="validityEndDate" type="xsd:dateTime" minOccurs="0"/>					
+			<xsd:element name="purchaseCostUnitValue" type="oct:PriceType" minOccurs="0"/>
+			<xsd:element name="thresholdInformation" type="oct:ThresholdInformationType" minOccurs="0"/>
+			<xsd:element name="renewalInformation" type="oct:RenewalInformationType" minOccurs="0"/>
+			<xsd:element name="otherEvents" type="oct:EventsListType" minOccurs="0"/>
+			<xsd:element name="purchaseModelInfo" type="oct:PurchaseModelType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AcquiredPurchaseModelsListType">
+		<xsd:sequence>
+			<xsd:element name="acquiredPurchaseModel" type="oct:AcquiredPurchaseModelType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AcquiredPurchaseModelType">
+		<xsd:sequence>
+			<xsd:element name="purchaseCode" type="oct:PurchaseCodeType"/>
+			<xsd:element name="subPurchaseCode" type="oct:SubPurchaseCodeType" minOccurs="0"/>
+			<xsd:element name="description" type="oct:DescriptionType"/>
+			<xsd:element name="validityStartDate" type="xsd:dateTime"/>
+			<xsd:element name="validityEndType" type="xsd:int"/>
+			<xsd:element name="validityUnits" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="validityEndDate" type="xsd:dateTime" minOccurs="0"/>					
+			<xsd:element name="thresholdInformation" type="oct:ThresholdInformationType" minOccurs="0"/>
+			<xsd:element name="renewalInformation" type="oct:RenewalInformationAcquiredType" minOccurs="0"/>
+			<xsd:element name="otherEvents" type="oct:EventsListType" minOccurs="0"/>
+			<xsd:element name="purchaseModelInfo" type="oct:PurchaseModelType"/>
+		</xsd:sequence>	
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelType">
+		<xsd:choice>
+			<xsd:element name="purchaseModelUnit" type="oct:PurchaseModelUnitType"/>
+			<xsd:element name="purchaseModelVoucher" type="oct:PurchaseModelVoucherType"/>
+			<xsd:element name="purchaseModelUsageTariff" type="oct:PurchaseModelUsageTariffType"/>
+			<xsd:element name="purchaseModelSubscription" type="oct:PurchaseModelSubscriptionType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelBaseType">    
+		<xsd:sequence>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelUnitType">
+		<xsd:complexContent>
+			<xsd:extension base="oct:PurchaseModelBaseType">
+				<xsd:sequence>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelVoucherType">
+		<xsd:complexContent>
+			<xsd:extension base="oct:PurchaseModelBaseType">
+				<xsd:sequence>
+					<xsd:element name="voucherUnits" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelUsageTariffType">
+		<xsd:complexContent>
+			<xsd:extension base="oct:PurchaseModelBaseType">
+				<xsd:sequence>
+					<xsd:element name="accumPeriod" type="oct:PeriodType" minOccurs="0"/>
+					<xsd:element name="usageCostUnitValue" type="oct:PriceType"/>
+					<xsd:element name="usageCost" type="oct:TariffType"/>
+					<xsd:element name="accumQuantity" type="xsd:int" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PeriodType">
+		<xsd:sequence>
+			<xsd:element name="firstStartDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="startType" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="endType" type="xsd:int"/>
+			<xsd:element name="timeUnits" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TariffType">
+		<xsd:sequence>
+			<xsd:element name="segment" type="oct:SegmentType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SegmentType">
+		<xsd:sequence>
+			<xsd:element name="segmentId" type="xsd:unsignedInt"/>
+			<xsd:element name="length" type="xsd:int"/>
+			<xsd:element name="quantity" type="xsd:unsignedInt"/>
+			<xsd:element name="costUnitValue" type="oct:PriceType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PurchaseModelSubscriptionType">
+		<xsd:complexContent>
+			<xsd:extension base="oct:PurchaseModelBaseType">
+				<xsd:sequence>
+					<xsd:element name="availablePurchaseModelsList" type="oct:AvailablePurchaseModelsListType" minOccurs="0"/>
+					<xsd:element name="authorizedEventsList" type="oct:EventsListType" minOccurs="0"/>
+					<xsd:element name="cacheExpires" type="xsd:long" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ThresholdType">
+		<xsd:sequence>
+			<xsd:element name="priceUnits" type="oct:UnitValueType"/>
+			<xsd:element name="priceCurrencyCode" type="xsd:unsignedInt"/>
+			<xsd:element name="readOnly" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="extension" type="oct:ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ThresholdsListResponseType">
+		<xsd:sequence>
+			<xsd:element name="threshold" type="oct:ThresholdType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ThresholdsListRequestType">
+		<xsd:sequence>
+			<xsd:element name="threshold" type="oct:PriceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationControlsResponseType">
+		<xsd:sequence>
+			<xsd:element name="applicationID" type="xsd:int"/>
+			<xsd:element name="applicationUserLimit" type="oct:PriceType" minOccurs="0"/>
+			<xsd:element name="applicationUserExpenses" type="oct:PriceType" minOccurs="0"/>
+			<xsd:element name="applicationThresholdsList" type="oct:ThresholdsListResponseType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationControlsRequestType">
+		<xsd:sequence>
+			<xsd:element name="applicationID" type="xsd:int"/>
+			<xsd:element name="applicationUserLimit" type="oct:PriceType" minOccurs="0"/>
+			<xsd:element name="applicationThresholdsList" type="oct:ThresholdsListRequestType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationControlsListRequestType">
+		<xsd:sequence>
+			<xsd:element name="applicationControls" type="oct:ApplicationControlsRequestType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationControlsListResponseType">
+		<xsd:sequence>
+			<xsd:element name="applicationControls" type="oct:ApplicationControlsResponseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

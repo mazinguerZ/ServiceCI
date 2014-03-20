@@ -1,0 +1,24 @@
+<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <soap:Fault>
+         <faultcode>soap:Server</faultcode>
+         <faultstring>JavaCalloutFailure</faultstring>
+         <faultactor/>
+         <detail>
+            <source>
+               <errorcode>34100</errorcode>
+               <trace>Fault Name: JavaCalloutFailure
+                        Error Type: JavaCalloutFailure
+                        Description: JavaCalloutFailure
+                        Message: SVR_1004;ChannelType
+                        Service: OProv_SubscriptionsService
+                        Endpoint: OProv_SubscriptionsService_SOAP11HTTP_client
+                        Operation (Client):activateService
+                        FlowTransitionState : Client_Request_User_Error
+                        Policy : VerificationActivateServiceBody
+                        VerificationjavaCallout</trace>
+            </source>
+         </detail>
+      </soap:Fault>
+   </soap:Body>
+</soap:Envelope>

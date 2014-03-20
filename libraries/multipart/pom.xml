@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>es.tid.neosdp.gw.bluevia</groupId>
+        <artifactId>library</artifactId>
+        <version>2.6.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <groupId>es.tid.neosdp.gw.bluevia.library</groupId>
+    <artifactId>multipart</artifactId>
+
+    <name>Bluevia Library (Multipart)</name>
+    <description>Library to handle HTTP multiparts. Can parse multipart fragmentsand update them</description>
+
+    <!-- https://barricada.hi.inet/repositorio/XSSDP/apigee/Common/libraries/multipart/branches/multipart-0.3.1 -->
+    <dependencies>
+        <!-- common deps -->
+        <dependency>
+            <groupId>es.tid.neosdp.common.common-libs</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+
+        <!-- external -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eaio.stringsearch</groupId>
+            <artifactId>stringsearch</artifactId>
+        </dependency>
+    </dependencies>
+</project>

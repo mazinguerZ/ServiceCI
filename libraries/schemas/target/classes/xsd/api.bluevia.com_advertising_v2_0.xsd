@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- July 17, 2012 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://api.bluevia.com/schemas/advertising/v2" 
+			xmlns:com="http://api.bluevia.com/schemas/common/v2"
+			targetNamespace="http://api.bluevia.com/schemas/advertising/v2" 
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xsd:import namespace="http://api.bluevia.com/schemas/common/v2" schemaLocation="api.bluevia.com_common_v2_0.xsd"/>
+
+
+
+<xsd:annotation>
+	<xsd:documentation>The following are the resources to be included in HTTP requests or responses</xsd:documentation>
+</xsd:annotation>		
+
+<!-- Retrieve an Advertisement -->
+	<!-- Response to GET /ads/me.xml -->
+	<!-- Response to GET /ads.xml -->
+		<!-- Response if several advertisements are returned -->
+	<xsd:element name="adList" type="tns:AdListType"/>
+		<!-- Response if a single advertisement is returned -->
+	<xsd:element name="ad" type="tns:AdType"/>
+
+	
+<xsd:annotation>
+	<xsd:documentation>The following are the types defined for each used resource</xsd:documentation>
+</xsd:annotation>	
+
+   <xsd:complexType name="AdListType">
+        <xsd:sequence>
+             <xsd:element name="advertisement" type="tns:AdType" maxOccurs="unbounded"/> 			 
+        </xsd:sequence>            
+    </xsd:complexType>
+
+	<xsd:complexType name="AdType">
+        <xsd:sequence>
+             <xsd:element name="type" type="xsd:string"/>
+             <xsd:choice>
+             	<!-- The following sequence is returned when the Advertisement is a banner -->
+             	<xsd:sequence>
+             		<xsd:element name="width" type="xsd:int" minOccurs="0"/>
+			 		<xsd:element name="height" type="xsd:int" minOccurs="0"/>
+			 		<xsd:element name="src" type="xsd:anyURI"/>			 		
+			 	</xsd:sequence>
+			 	<!-- The following element is returned when the Advertisement is a text -->
+			 	<xsd:element name="content" type="xsd:string"/>
+			 </xsd:choice>	
+			 <xsd:element name="href" type="xsd:anyURI"/>			 
+        </xsd:sequence>            
+    </xsd:complexType>	
+
+</xsd:schema>

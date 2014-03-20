@@ -1,0 +1,9 @@
+--URFNfBE4vb9UxaPOU9e_bBkq1WiwQroju3XgnN
+Content-Disposition: form-data; name="root-fields"
+Content-Type: application/xml;charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<message xmlns="http://www.telefonica.com/schemas/UNICA/REST/mms/v1/">
+</message>
+

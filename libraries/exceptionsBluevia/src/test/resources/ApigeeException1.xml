@@ -1,0 +1,10 @@
+                        Fault Name: JavaCalloutFailure
+                        Error Type: JavaCalloutFailure
+                        Description: JavaCalloutFailure
+                        Message: SVC_0002;
+                        Endpoint: UserContext_v2_users_client
+                        Operation (Client):getUserProfile
+                        FlowTransitionState : Client_Request_User_Error
+                        Policy : ValidateRequest
+                        ValidateRequestTask
+                   

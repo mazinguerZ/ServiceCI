@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>es.tid.neosdp.gw.bluevia</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.6.0</version>
+        <relativePath>../../parent</relativePath>
+    </parent>
+
+    <groupId>es.tid.neosdp.gw.bluevia.library</groupId>
+	<artifactId>exceptionsBluevia</artifactId>
+
+    <name>neoSDP Apigee Domain Libs (Exceptions)</name>
+	<description>Library to manage neoSDP exceptions in different representations and UNICA API versions</description>
+    <!-- from https://barricada.hi.inet/repositorio/XSSDP/apigee/Common/libraries/exceptions/tags/exceptions-0.8.6 -->
+
+    <dependencies>
+		<dependency>
+			<groupId>com.apigee</groupId>
+			<artifactId>javacallout</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>es.tid.neosdp.common.common-libs</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>es.tid.neosdp.common.common-libs</groupId>
+			<artifactId>representations</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>es.tid.neosdp.gw.common.library</groupId>
+            <artifactId>callouts</artifactId>
+        </dependency>
+	</dependencies>
+</project>

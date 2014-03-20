@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by aa (aa) -->
+<!--Release Date: December, 30 2010-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.telefonica.com/schemas/UNICA/RPC/common/v1" targetNamespace="http://www.telefonica.com/schemas/UNICA/RPC/common/v1" elementFormDefault="qualified">
+    <xsd:complexType name="AddressType">
+        <xsd:annotation>
+            <xsd:documentation>Information of the user’s address</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="street" type="xsd:string"/>
+            <xsd:element name="streetNumber" type="xsd:int"/>
+            <xsd:element name="locality" type="xsd:string"/>
+            <xsd:element name="region" type="xsd:string"/>
+            <xsd:element name="postalCode" type="xsd:int"/>
+            <xsd:element name="country" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="EmailAddressType">
+        <xsd:annotation>
+            <xsd:documentation>User’s e-mail address</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value=".+@.+\..+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="FlagType">
+        <xsd:annotation>
+            <xsd:documentation>Generic yes/no flag</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="yes"/>
+            <xsd:enumeration value="no"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="GenderType">
+        <xsd:annotation>
+            <xsd:documentation>List of possible gender values</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="male"/>
+            <xsd:enumeration value="female"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ImeiType">
+        <xsd:annotation>
+            <xsd:documentation>IMEI and IMEI/SV format</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{2}-[0-9]{6}-[0-9]{6}-[0-9]{1,2}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ImsiType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="SipUriType">
+        <xsd:annotation>
+            <xsd:documentation>SIP URI format according to RFC 3261
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="sip:.+@.+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="TimestampType">
+        <xsd:restriction base="xsd:dateTime"/>
+    </xsd:simpleType>
+    <xsd:simpleType name="TelUriType">
+        <xsd:annotation>
+            <xsd:documentation>Tel URI for Telephone Numbers according to RFC
+				3966, based on a simplified regular expression. A complete regular
+				expression matching Tel URI format is too complicated and probably
+				is difficult to be matched during automatic schema checking
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="tel:.+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="UserIdType">
+        <xsd:annotation>
+            <xsd:documentation>Group of elements, only ONE of the child elements may be given for a UserId</xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+            <xsd:element name="phoneNumber" type="tns:E164Type"/>
+            <xsd:element name="anyUri" type="tns:AnyURIType" />
+            <xsd:element name="ipAddress" type="tns:IpAddressType" />
+            <xsd:element name="alias" type="tns:AliasType" />
+            <xsd:element name="otherId" type="tns:OtherIdType"/>
+        </xsd:choice>
+    </xsd:complexType>
+    <xsd:simpleType name="E164Type">
+        <xsd:annotation>
+            <xsd:documentation>A phone number. Is a maximum of 15 digits
+				following the E164 format</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="IpAddressType">
+        <xsd:annotation>
+            <xsd:documentation>A generic IP address, including both v4 and v6. Only ONE of the child elements may be given.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+            <xsd:element name="ipv4" type="tns:Ipv4AddressType"/>
+            <xsd:element name="ipv6" type="tns:Ipv6AddressType"/>
+        </xsd:choice>
+    </xsd:complexType>
+    <xsd:simpleType name="Ipv4AddressType">
+        <xsd:annotation>
+            <xsd:documentation>An IPv4 address</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="((0|(1[0-9]{0,2})|(2(([0-4][0-9]?)|(5[0-5]?)|([6-9]?)))|([3-9][0-9]?))\.){3}(0|(1[0-9]{0,2})|(2(([0-4][0-9]?)|(5[0-5]?)|([6-9]?)))|([3-9][0-9]?))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="Ipv6AddressType">
+        <xsd:annotation>
+            <xsd:documentation>An IPv6 address</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="(([0-9a-fA-F]+:){7}[0-9a-fA-F]+)|(([0-9a-fA-F]+:)*[0-9a-fA-F]+)?::(([0-9a-fA-F]+:)*[0-9a-fA-F]+)?"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="AnyURIType">
+        <xsd:annotation>
+            <xsd:documentation>Any URI according to RFC </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value=".*:.*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="AliasType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+    <xsd:complexType name="OtherIdType">
+        <xsd:annotation>
+            <xsd:documentation>Extended type for additional user identifiers
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="type" type="xsd:string"/>
+            <xsd:element name="value" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="SearchParamsType">
+        <xsd:annotation>
+            <xsd:documentation>Generic sequence of name-value pairs, to be used
+				in searches</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="param" type="tns:NameValuePairType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="NameValuePairType">
+        <xsd:annotation>
+            <xsd:documentation>Generic name-value pair</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="value" type="tns:ValueType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ValueType">
+        <xsd:annotation>
+            <xsd:documentation>Generic name-value pair</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="value" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="FilterParamsType">
+        <xsd:annotation>
+            <xsd:documentation>Sequence of simple general string parameters, to
+				be used as filter criteria in requests</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="fields" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="SimpleReferenceType">
+        <xsd:annotation>
+            <xsd:documentation>Allows client to provide their URL to have asynchronous notifications in RPC</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="endpoint" type="xsd:anyURI"/>
+            <xsd:element name="correlator" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ExtensionType">
+        <xsd:annotation>
+            <xsd:documentation>Generic extension type</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:any namespace="##any" processContents="lax" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CallParticipantStatusType">
+        <xsd:sequence>
+            <xsd:element name="callParticipantStatus">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="tns:CallParticipantStatusesType xsd:string"/>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="CallParticipantStatusesType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="CallParticipantInitial">
+                <xsd:annotation>
+                    <xsd:documentation>
+					The call is being established to a participant
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantConnected">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The participant is active in the call
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantTerminated">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The call to the participant was terminated
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="CallParticipantTerminationCauseType">
+        <xsd:sequence>
+            <xsd:element name="callParticipantTerminationCause">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="tns:CallParticipantTerminationCausesType xsd:string"/>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="CallParticipantTerminationCausesType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="CallParticipantNoAnswer">
+                <xsd:annotation>
+                    <xsd:documentation>
+					The participant did not answer the call
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantBusy">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The participant was busy
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantNotReachable">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The participant was not reachable
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantHangUp">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The participant hung up thereby terminating the call for that party
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="CallParticipantAborted">
+                <xsd:annotation>
+                    <xsd:documentation>
+    					The call was aborted for the participant (i.e. any other termination cause than hanging up)
+    				</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="CallParticipantInformationType">
+        <xsd:annotation>
+            <xsd:documentation>Information about a participant in a call</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="callParticipantIdentifier" type="tns:UserIdType"/>
+            <xsd:element name="callParticipantStatus" type="tns:CallParticipantStatusType"/>
+            <xsd:element name="callParticipantStartTime" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="callParticipantDuration" type="xsd:int" minOccurs="0"/>
+            <xsd:element name="callParticipantTerminationCause" type="tns:CallParticipantTerminationCauseType" minOccurs="0"/>
+            <xsd:element name="mediaInfo" type="tns:MediaInfoType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CallSessionInformationType">
+        <xsd:annotation>
+            <xsd:documentation>Call Session information for a call</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="callSessionIdentifier" type="xsd:string"/>
+            <xsd:element name="callParticipantInformation" type="tns:CallParticipantInformationType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MediaInfoType">
+        <xsd:annotation>
+            <xsd:documentation>Description of the Media</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="media" type="tns:MediaType"/>
+            <xsd:element name="mediaDirection" type="tns:MediaDirectionType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MediaType">
+        <xsd:sequence>
+            <xsd:element name="media">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="tns:MediaTypesType xsd:string"/>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="MediaTypesType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Audio"/>
+            <xsd:enumeration value="Video"/>
+            <xsd:enumeration value="Chat"/>
+            <xsd:enumeration value="Data"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="MediaDirectionType">
+        <xsd:sequence>
+            <xsd:element name="mediaDirection">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="tns:MediaDirectionsType xsd:string"/>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="MediaDirectionsType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="In">
+                <xsd:annotation>
+                    <xsd:documentation>Incoming media</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="Out">
+                <xsd:annotation>
+                    <xsd:documentation>Outgoing media</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="InOut">
+                <xsd:annotation>
+                    <xsd:documentation>Bidirectional media</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

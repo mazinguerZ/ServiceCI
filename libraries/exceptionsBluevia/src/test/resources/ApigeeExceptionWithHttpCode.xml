@@ -1,0 +1,12 @@
+                        Fault Name: JavaCalloutFailure
+                        Error Type: JavaCalloutFailure
+                        Description: JavaCalloutFailure
+                        Message: 403
+                        Service: MMS_v2
+                        Endpoint: mmsOutbound_v1_target
+                        Operation (Target):sendMMS
+                        FlowTransitionState : Target_Request_User_Error
+                        Policy : TransformRootFieldsToXml_v1_sendMMSPolicy
+                        TransformBodyToXml_v1
+
+                   

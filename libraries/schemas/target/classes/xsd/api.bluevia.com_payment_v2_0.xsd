@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Oct 18, 2012 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://api.bluevia.com/schemas/payment/v2" xmlns:com="http://api.bluevia.com/schemas/common/v2"
+	targetNamespace="http://api.bluevia.com/schemas/payment/v2"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:import namespace="http://api.bluevia.com/schemas/common/v2"
+		schemaLocation="api.bluevia.com_common_v2_0.xsd" />
+
+	<xsd:annotation>
+		<xsd:documentation>The following are the resources to be included in
+			HTTP requests or responses
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<!-- PAYMENTS LOGIC -->
+	<!-- POST /payments -->
+	<xsd:element name="paymentRequest" type="PaymentRequestType" />
+
+	<!-- Response to POST /payments -->
+	<!-- Service callback: POST callbackURL -->
+	<xsd:element name="paymentStatus" type="PaymentStatusType" />
+
+	<!-- POST /payments/{transactionId}/validate -->
+	<xsd:element name="paymentValidateRequest" type="ValidateType" />
+
+	<!-- Response to GET /payments/{transactionId} -->
+	<!-- Response to POST /payments/{transactionId}/validate -->
+	<xsd:element name="payment" type="PaymentType" />
+
+	<!-- Response to GET /payments -->
+	<xsd:element name="paymentList" type="PaymentListType" />
+
+	<!-- RESERVED PAYMENTS LOGIC -->
+	<!-- POST /reservedPayments -->
+	<xsd:element name="reservedPaymentRequest" type="ReservedPaymentRequestType" />
+
+	<!-- POST /reservedPayments/{transactionId}/captures -->
+	<xsd:element name="reservedPaymentCaptureRequest" type="ReservedPaymentCaptureRequestType" />
+
+	<!-- POST /reservedPayments/{reservedPaymentId}/release -->
+	<!-- empty body -->
+
+	<!-- Response to POST /reservedPayments -->
+	<!-- Response to POST /reservedPayments/{reservedPaymentId}/release -->
+	<!-- Service callback: POST callbackURL -->
+	<xsd:element name="reservedPaymentStatus" type="ReservedPaymentStatusType" />
+
+	<!-- Response to GET /reservedPayments/{reservedPaymentId} -->
+	<xsd:element name="reservedPayment" type="ReservedPaymentType" />
+
+	<!-- Response to GET /reservedPayments -->
+	<xsd:element name="reservedPaymentList" type="ReservedPaymentListType" />
+
+	<!-- Response to POST /reservedPayments/{reservedPaymentId}/captures -->
+	<!-- Response to GET /reservedPayments/{reservedPaymentId}/captures/{transactionId} -->
+	<xsd:element name="reservedPaymentCapture" type="ReservedPaymentCaptureType" />
+
+	<!-- Response to GET /reservedPayments/{reservedPaymentId}/captures/ -->
+	<xsd:element name="reservedPaymentCaptureList" type="ReservedPaymentCaptureListType" />
+
+	<!-- REFUNDS LOGIC -->
+	<!-- POST /refunds -->
+	<xsd:element name="refundRequest" type="RefundRequestType" />
+
+	<!-- Response to POST /refunds -->
+	<!-- Service callback: POST callbackURL -->
+	<xsd:element name="refundStatus" type="RefundStatusType" />
+
+	<!-- Response to GET /refunds/{transactionId} -->
+	<xsd:element name="refund" type="RefundType" />
+
+	<!-- Response to GET /refunds -->
+	<xsd:element name="refundList" type="RefundListType" />
+
+	<xsd:annotation>
+		<xsd:documentation>The following are the types defined for each used
+			resource
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<!-- PAYMENTS TYPES -->
+
+	<xsd:complexType name="PaymentRequestType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="description" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="amount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="taxAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="totalAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="currency" type="xsd:string" />
+				</xsd:sequence>
+				<xsd:element name="code" type="xsd:string" />
+			</xsd:choice>
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="productId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="productClass" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="redirectUrl" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="callbackUrl" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PaymentStatusType">
+		<xsd:sequence>
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountCharged" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="transactionId" type="xsd:string" />
+			<xsd:element name="status" type="PaymentStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="authorizationEndpointUrl" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PaymentType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="description" type="xsd:string" />
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="amount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="taxAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="totalAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="currency" type="xsd:string" />
+				</xsd:sequence>
+				<xsd:element name="code" type="xsd:string" />
+			</xsd:choice>
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="productId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="productClass" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountCharged" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="transactionId" type="xsd:string" />
+			<xsd:element name="status" type="PaymentStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PaymentListType">
+		<xsd:sequence>
+			<xsd:element name="payment" type="PaymentType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xsd:element name="totalResults" type="xsd:unsignedInt"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- RESERVED PAYMENTS TYPES -->
+
+	<xsd:complexType name="ReservedPaymentRequestType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" />
+			<xsd:element name="description" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="amount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="taxAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="totalAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="currency" type="xsd:string" />
+				</xsd:sequence>
+				<xsd:element name="code" type="xsd:string" />
+			</xsd:choice>
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="productId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="productClass" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="callbackUrl" type="xsd:anyURI"
+				minOccurs="0" />
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentStatusType">
+		<xsd:sequence>
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountCharged" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="totalAmountReserved" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="reservedPaymentId" type="xsd:string" />
+			<xsd:element name="status" type="ReservedPaymentStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" />
+			<xsd:element name="description" type="xsd:string" />
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="amount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="taxAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="totalAmount" type="xsd:decimal"
+						minOccurs="0" />
+					<xsd:element name="currency" type="xsd:string" />
+				</xsd:sequence>
+				<xsd:element name="code" type="xsd:string" />
+			</xsd:choice>
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="productId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="productClass" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountCharged" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="totalAmountReserved" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="reservedPaymentId" type="xsd:string" />
+			<xsd:element name="status" type="ReservedPaymentStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentListType">
+		<xsd:sequence>
+			<xsd:element name="reservedPayment" type="ReservedPaymentType"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="totalResults" type="xsd:unsignedInt"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentCaptureRequestType">
+		<xsd:sequence>
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentCaptureType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" minOccurs="0" /> <!-- informative -->
+			<xsd:element name="reservedPaymentId" type="xsd:string"
+				minOccurs="0" />  <!-- informative, refers to the Id of the reserved payment resource -->
+			<xsd:element name="totalAmountCharged" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="transactionId" type="xsd:string" />   <!-- the transactionId for the capture -->
+			<xsd:element name="status"
+				type="ReservedPaymentCaptureStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReservedPaymentCaptureListType">
+		<xsd:sequence>
+			<xsd:element name="reservedPaymentCapture" type="ReservedPaymentCaptureType"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="totalResults" type="xsd:unsignedInt"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<!-- REFUNDS TYPES -->
+
+	<xsd:complexType name="RefundRequestType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:sequence> <!-- Refund related to previous payment transaction -->
+					<xsd:element name="description" type="xsd:string"
+						minOccurs="1" maxOccurs="1" />
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="amount" type="xsd:decimal" />
+						<xsd:element name="currency" type="xsd:string" />
+					</xsd:sequence>
+					<xsd:element name="transactionIdToRefund" type="xsd:string" />
+				</xsd:sequence>
+				<xsd:sequence> <!-- Refund UNrelated to previous payment transaction -->
+					<xsd:element name="userId" type="xsd:anyURI" />
+					<xsd:element name="description" type="xsd:string" />
+					<xsd:element name="amount" type="xsd:decimal" />
+					<xsd:element name="currency" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:choice>
+			<xsd:element name="reason" type="RefundReasonType"
+				minOccurs="0" />
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RefundStatusType">
+		<xsd:sequence>
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountRefunded" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="refundTransactionId" type="xsd:string" />
+			<xsd:element name="status" type="RefundStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RefundType">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:anyURI" minOccurs="0" />
+			<xsd:element name="description" type="xsd:string" />
+			<xsd:element name="amount" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="currency" type="xsd:string" minOccurs="0" />
+			<xsd:element name="transactionIdToRefund" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="reason" type="RefundReasonType"
+				minOccurs="0" />
+			<xsd:element name="merchantId" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="channel" type="xsd:string" minOccurs="0" />
+			<xsd:element name="paymentMethod" type="PaymentMethodType"
+				minOccurs="0" />
+			<xsd:element name="totalAmountRefunded" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="refundTransactionId" type="xsd:string" />
+			<xsd:element name="status" type="RefundStatusValuesType" />
+			<xsd:element name="statusDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="referenceCode" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="serverReferenceCode" type="xsd:string"
+				minOccurs="0" />				
+			<xsd:element name="additionalMetaData" type="com:NameValuePairType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RefundListType">
+		<xsd:sequence>
+			<xsd:element name="refund" type="RefundType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xsd:element name="totalResults" type="xsd:unsignedInt"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:documentation>The following are the rest of types used in the API
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:complexType name="ValidateType">
+		<xsd:sequence>
+			<xsd:element name="validationData" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PaymentMethodType">
+		<xsd:sequence>
+			<xsd:element name="type" type="PaymentMethodTypeType" />
+			<xsd:element name="id" type="xsd:string" minOccurs="0" />
+			<xsd:element name="maskedAccountNumber" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="cvv" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="PaymentMethodTypeEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="directToBill" />
+			<xsd:enumeration value="eMoney" />
+			<xsd:enumeration value="bankAccount" />
+			<xsd:enumeration value="debitCard" />
+			<xsd:enumeration value="creditCard" />
+			<xsd:enumeration value="prepaidCard" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="PaymentMethodTypeType">
+		<xsd:union memberTypes="PaymentMethodTypeEnumType xsd:string" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="PaymentStatusValuesType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="pendingAuthorization" />
+			<xsd:enumeration value="authorized" />
+			<xsd:enumeration value="processing" />
+			<xsd:enumeration value="charged" />
+			<xsd:enumeration value="unAuthorized" />
+			<xsd:enumeration value="deniedByUser" />
+			<xsd:enumeration value="denied" />
+			<xsd:enumeration value="failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ReservedPaymentStatusValuesType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="processing" />
+			<xsd:enumeration value="reserved" />
+			<xsd:enumeration value="charged" /> <!-- charged status reserved for future use -->
+			<xsd:enumeration value="released" />
+			<xsd:enumeration value="deniedByUser" />
+			<xsd:enumeration value="denied" />
+			<xsd:enumeration value="failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ReservedPaymentCaptureStatusValuesType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="charged" />
+			<xsd:enumeration value="deniedByUser" />
+			<xsd:enumeration value="denied" />
+			<xsd:enumeration value="failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RefundStatusValuesType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="processing" />
+			<xsd:enumeration value="refunded" />
+			<xsd:enumeration value="failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RefundReasonEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="userComplaint" />
+			<xsd:enumeration value="chargeRejected" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RefundReasonType">
+		<xsd:union memberTypes="RefundReasonEnumType xsd:string" />
+	</xsd:simpleType>
+
+</xsd:schema>

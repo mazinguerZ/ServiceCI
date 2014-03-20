@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>es.tid.neosdp.gw.bluevia</groupId>
+        <artifactId>library</artifactId>
+        <version>2.6.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <groupId>es.tid.neosdp.gw.bluevia.library</groupId>
+    <artifactId>sms</artifactId>
+
+    <name>Bluevia Library (SMS)</name>
+    <description>Library to handle SMS (e.g. to check if the message size exceeds a single SMS)</description>
+	<!-- https://barricada.hi.inet/repositorio/XSSDP/apigee/Common/libraries/sms/branches/sms-0.1.0 -->
+
+</project>

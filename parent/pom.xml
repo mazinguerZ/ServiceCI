@@ -1,0 +1,257 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>es.uah.ci.demo</groupId>
+        <artifactId>domain</artifactId>
+        <version>2.6.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
+
+    <name>ServiceCI (Parent)</name>
+    <description>${project.name}</description>
+
+    <properties>
+        <!-- ***************************** -->
+        <!--  PLUGIN VERSIONS AND OPTIONS  -->
+        <!-- ***************************** -->
+        <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
+        <maven-install-plugin.version>2.3.1</maven-install-plugin.version>
+        <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <maven-war-plugin.version>2.2</maven-war-plugin.version>
+        <maven-dependency-plugin.version>2.6</maven-dependency-plugin.version>
+        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+
+        <tomcat6-maven-plugin.version>2.0</tomcat6-maven-plugin.version>
+        <jaxb2-maven-plugin.version>1.3.1</jaxb2-maven-plugin.version>
+        <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
+
+        <compiler.jvm.version>1.6</compiler.jvm.version>
+        <compilerInfoDebug>true</compilerInfoDebug>
+        <compilerOptimize>false</compilerOptimize>
+        <compilerShowWarnings>false</compilerShowWarnings>
+        <compilerShowDeprecation>false</compilerShowDeprecation>
+        <compilerVerbose>false</compilerVerbose>
+
+
+        <!-- other -->
+        <version.jackson>1.9.5</version.jackson>
+        <version.junit>4.8.1</version.junit>
+        <version.java>1.6</version.java>
+        <version.apache.commons-io>1.3.2</version.apache.commons-io>
+        <version.commons-lang3>3.1</version.commons-lang3>
+        <version.com.eaio.stringsearch>2</version.com.eaio.stringsearch>
+
+        <version.jaxb>2.0</version.jaxb>
+        <version.jaxb.impl>2.0.3</version.jaxb.impl>
+    </properties>
+
+    <dependencyManagement>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+
+	<dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-digest</artifactId>
+            <version>1.0</version>
+        </dependency>
+	<dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-filtering</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <!-- clean configuration to erase filtered descriptors -->
+                <plugin>
+                  <artifactId>maven-clean-plugin</artifactId>
+                  <version>${maven-clean-plugin.version}</version>
+                  <executions>
+                    <execution>
+                      <id>clean-provider-filtered-descriptors</id>
+                      <phase>initialize</phase>
+                      <goals>
+                        <goal>clean</goal>
+                      </goals>
+                    </execution>
+                  </executions>
+                </plugin>
+                
+                <!-- Resources filtering -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                    <configuration>
+                        <encoding>${encoding}</encoding>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>filter-resources</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>resources</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Sources packaging cofiguration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                            <configuration>
+                                <excludes>
+                                    <exclude>**/pom.xml</exclude>
+                                    <exclude>**/.settings/</exclude>
+                                    <exclude>**/target/</exclude>
+                                    <exclude>**/.classpath</exclude>
+                                    <exclude>**/.project</exclude>
+                                </excludes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${compiler.jvm.version}</source>
+                        <target>${compiler.jvm.version}</target>
+                        <encoding>${encoding}</encoding>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <index>true</index>
+                            <manifestEntries>
+                                <Artifact-Version>${project.version}</Artifact-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>create-jar</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix>
+                            </manifest>
+                            <manifestEntries>
+                                <Artifact-Version>${project.version}</Artifact-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>unpack-dependencies</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>unpack-dependencies</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat6-maven-plugin</artifactId>
+                    <version>${tomcat6-maven-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jaxb2-maven-plugin</artifactId>
+                    <version>${jaxb2-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>xjc</id>
+                            <phase>generate</phase>
+                            <goals>
+                                <goal>xjc</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <packageName>${project.groupId}.${project.artifactId}.model</packageName>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>parse-version</id>
+                            <goals>
+                                <goal>parse-version</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

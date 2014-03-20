@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- July 17, 2012 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://api.bluevia.com/schemas/mms/v2" 
+			xmlns:com="http://api.bluevia.com/schemas/common/v2"
+			targetNamespace="http://api.bluevia.com/schemas/mms/v2" 
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xsd:import namespace="http://api.bluevia.com/schemas/common/v2" schemaLocation="api.bluevia.com_common_v2_0.xsd"/>
+
+
+<xsd:annotation>
+	<xsd:documentation>The following are the resources to be included in HTTP requests or responses</xsd:documentation>
+</xsd:annotation>		
+
+<!-- MMS OUTBOUND LOGIC -->
+	<!-- POST /mmsOutbound.xml -->
+	<xsd:element name="mmsOutboundRequest" type="tns:MmsOutboundRequestType"/>
+
+	<!-- Response to POST /mmsOutbound.xml (only id is returned) -->
+	<!-- Response to GET /mmsOutbound/id.xml -->
+	<xsd:element name="mmsOutbound" type="tns:MmsOutboundType"/>
+
+	<!-- Response to GET /mmsOutbound.xml-->
+	<xsd:element name="mmsOutboundList" type="tns:MmsOutboundListType"/>
+	
+	<!-- Service callback: POST callbackURL -->
+	<xsd:element name="deliveryStatus" type="tns:DeliveryStatusNotificationType"/>
+
+
+<!-- SMS INBOUND LOGIC --> 
+	<!-- Response to GET /mmsInbound/id.xml -->
+	<!-- Service notification: POST preProvisionedAppURL -->
+	<xsd:element name="mmsInbound" type="tns:MmsInboundType"/>
+	
+	<!-- Response to GET /mmsInbound.xml (only Ids are returned)-->
+	<xsd:element name="mmsInboundList" type="tns:MmsInboundListType"/>
+
+
+
+<xsd:annotation>
+	<xsd:documentation>The following are the types defined for each used resource</xsd:documentation>
+</xsd:annotation>	
+
+
+	<xsd:complexType name="MmsOutboundRequestType">
+        <xsd:sequence>
+             <xsd:element name="from" type="xsd:anyURI" minOccurs="0"/>
+             <xsd:element name="to" type="xsd:anyURI" maxOccurs="unbounded"/>
+			 <xsd:element name="subject" type="xsd:string" minOccurs="0"/>
+			 <xsd:element name="callbackUrl" type="xsd:anyURI" minOccurs="0"/>			 
+        </xsd:sequence>            
+    </xsd:complexType>
+    
+    <xsd:complexType name="MmsOutboundType">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="from" type="xsd:anyURI" minOccurs="0"/>
+            <xsd:element name="to" type="tns:DestinationsInfoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="subject" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0"/> 		 
+        </xsd:sequence>            
+    </xsd:complexType>    
+    
+    <xsd:complexType name="MmsOutboundListType">
+        <xsd:sequence>
+            <xsd:element name="mmsOutbound" type="tns:MmsOutboundType" minOccurs="0" maxOccurs="unbounded"/> 		 
+        </xsd:sequence>            
+    </xsd:complexType>
+    
+    <xsd:complexType name="DeliveryStatusNotificationType">
+        <xsd:sequence>
+        	<xsd:element name="messageId" type="xsd:string"/>
+            <xsd:element name="address" type="xsd:anyURI"/>
+            <xsd:element name="status" type="xsd:string"/>
+        </xsd:sequence>            
+    </xsd:complexType>
+    
+    <xsd:complexType name="MmsInboundType">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="from" type="xsd:anyURI" minOccurs="0"/>
+            <xsd:element name="to" type="xsd:anyURI" minOccurs="0"/>
+			<xsd:element name="subject" type="xsd:string" minOccurs="0"/> 
+			<xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0"/>		 
+        </xsd:sequence>            
+    </xsd:complexType>
+        
+    <xsd:complexType name="MmsInboundListType">
+        <xsd:sequence>
+            <xsd:element name="mmsInbound" type="tns:MmsInboundType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>            
+    </xsd:complexType>   
+    
+
+    <xsd:annotation>
+		<xsd:documentation>The following are the rest of types used in the API</xsd:documentation>
+	</xsd:annotation>
+    
+     <!-- Check specification to find possible delivery status values -->
+       <xsd:complexType name="DestinationsInfoType">
+        <xsd:sequence>
+            <xsd:element name="address" type="xsd:anyURI"/>
+            <xsd:element name="status" type="xsd:string"/>	 
+        </xsd:sequence> 
+        </xsd:complexType>    
+    
+</xsd:schema>
